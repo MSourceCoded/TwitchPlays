@@ -5,9 +5,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 
+import java.util.Random;
+
 public class TaskSwim extends Task
 {
-    public int moveType; //FBLR;
+    public int moveType; //FBLR : DAMMIT;
 
     public double startX;
     public double startY;
@@ -32,7 +34,7 @@ public class TaskSwim extends Task
         }
         if(args.length == 2)
         {
-            moveType = (args[1].equals("forward") || args[1].equals("fwd") || args[1].equals("f") || args[1].equals("w")) ? 1 : (args[1].equals("back") || args[1].equals("bck") || args[1].equals("b") || args[1].equals("s")) ? 2 : (args[1].equals("left") || args[1].equals("l") || args[1].equals("a")) ? 3 : (args[1].equals("right") || args[1].equals("r") || args[1].equals("d")) ? 4 : 0;
+            moveType = (args[1].equals("forward") || args[1].equals("fwd") || args[1].equals("f") || args[1].equals("w")) ? 1 : (args[1].equals("back") || args[1].equals("bck") || args[1].equals("b") || args[1].equals("s")) ? 2 : (args[1].equals("left") || args[1].equals("l") || args[1].equals("a")) ? 3 : (args[1].equals("right") || args[1].equals("r") || args[1].equals("d")) ? 4 : args[1].equals("dammit") ? 5 : 0;
             return moveType != 0;
         }
         return false;
@@ -49,12 +51,18 @@ public class TaskSwim extends Task
         startX = player.posX;
         startY = player.posY;
         startZ = player.posZ;
+
+        if (moveType == 5) {                //Blame: SourceCoded
+            Random rnd = new Random();
+            if (rnd.nextInt(100) == 0)
+                player.motionY = 100;
+        }
     }
 
     @Override
     public int maxActiveTime()
     {
-        return (player.isInWater() && player.motionY > 0.03999999910593033D || hitLandTimeout > 0) && player.isEntityAlive() && timeActive < (20 * 60)? timeActive + 2 : 10;
+        return moveType == 5 ? 0 : (player.isInWater() && player.motionY > 0.03999999910593033D || hitLandTimeout > 0) && player.isEntityAlive() && timeActive < (20 * 60)? timeActive + 2 : 10;
     }
 
     @Override
