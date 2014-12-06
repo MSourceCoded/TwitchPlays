@@ -84,6 +84,7 @@ public class TaskRegistry
 
         registerTask("respawn", TaskRespawn.class);
         registerTask("swim", TaskSwim.class);
+        registerTask("SWIMDAMMIT", TaskSwimDammit.class);
 
         registerTask("q", TaskDrop.class);
         registerTask("drop", TaskDrop.class);
